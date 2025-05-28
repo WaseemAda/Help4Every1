@@ -1,0 +1,12 @@
+
+*CD into project file*
+cd /Users/christopherclarke/Documents/GitHub/Help4Every1
+
+Then type into computer terminal
+mongod --dbpath ~/data/db
+
+
+
+*Type into VSCode terminal*
+
+node server.js

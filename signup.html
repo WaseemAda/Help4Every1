@@ -41,29 +41,35 @@
         <li class="shape circle"></li>
         <li class="shape square"></li>
         <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
+        <li class="shape circle"></li>
+        <li class="shape square"></li>
+        <li class="shape triangle"></li>
       </ul>
   <div class="login-container">
     <h1 class="title">Help4Every1</h1>
     <h2>Create Your Account</h2>
-    <form>
+    <form id="signupForm">
       <div class="input-group">
         <i class="fa fa-user"></i>
-        <input type="text" placeholder="Username" required>
+        <input type="text" name="username" placeholder="Username" required>
       </div>
       <div class="input-group">
         <i class="fa fa-envelope"></i>
-        <input type="email" placeholder="Email" required>
+        <input type="email" name="email" placeholder="Email" required>
       </div>
       <div class="input-group">
         <i class="fa fa-lock"></i>
-        <input type="password" placeholder="Password" required>
+        <input type="password" name="password" placeholder="Password" required>
       </div>
       <div class="input-group">
         <i class="fa fa-lock"></i>
-        <input type="password" placeholder="Confirm Password" required>
+        <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
       </div>
 
-      <button class="login-button">Sign Up</button>
+      <button class="login-button" type="submit">Sign Up</button>
 
       <p class="signup-link">
         Already have an account? <a href="index.html">Login</a>
@@ -78,5 +84,41 @@
 
     </div>
   </div>
+  <script>
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    username: form.username.value,
+    email: form.email.value,
+    password: form.password.value,
+    confirmPassword: form.confirmPassword.value
+  };
+
+  // Optional: check if passwords match before sending
+  if (data.password !== data.confirmPassword) {
+    alert('Passwords do not match!');
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    if (response.ok) {
+      alert('Signup successful!');
+      // Optionally redirect to login page
+      window.location.href = 'index.html';
+    } else {
+      alert(result.message || 'Signup failed');
+    }
+  } catch (err) {
+    alert('Error connecting to server');
+  }
+});
+</script>
 </body>
 </html>
