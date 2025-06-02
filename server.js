@@ -20,10 +20,26 @@ const userSchema = new mongoose.Schema({
   role: String
 });
 
+// Task Schema
+const taskSchema = new mongoose.Schema({
+  taskTitle: String,
+  description: String,
+  budget: Number,
+  location: String,
+  date: String,
+  time: String,
+  username: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
+const Task = mongoose.model('Task', taskSchema);
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ----- USER ROUTES -----
 
 // Signup route
 app.post('/api/signup', async (req, res) => {
@@ -44,7 +60,6 @@ app.post('/api/signup', async (req, res) => {
   try {
     const roles = ['Customer', 'Worker', 'Admin'];
 
-    // Check across all roles for existing email
     for (let r of roles) {
       const Model = mongoose.model(r.charAt(0).toUpperCase() + r.slice(1), userSchema, r);
       const exists = await Model.findOne({ email });
@@ -53,7 +68,6 @@ app.post('/api/signup', async (req, res) => {
       }
     }
 
-    // Save to correct collection
     const UserModel = mongoose.model(role.charAt(0).toUpperCase() + role.slice(1), userSchema, role);
     const newUser = new UserModel({ username, email, password, role });
     await newUser.save();
@@ -88,6 +102,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// Profile fetch route
 app.post('/api/profile', async (req, res) => {
   const { username, role } = req.body;
 
@@ -112,6 +127,38 @@ app.post('/api/profile', async (req, res) => {
   }
 });
 
+// ----- TASK ROUTES -----
+
+// Post new task
+app.post('/api/task', async (req, res) => {
+  const { taskTitle, description, budget, location, date, time, username } = req.body;
+
+  if (!taskTitle || !description || !location) {
+    return res.status(400).json({ message: 'Missing required fields.' });
+  }
+
+  try {
+    const newTask = new Task({ taskTitle, description, budget, location, date, time, username });
+    await newTask.save();
+    return res.status(201).json({ message: 'Task saved.' });
+  } catch (err) {
+    console.error('Error saving task:', err);
+    return res.status(500).json({ message: 'Server error.' });
+  }
+});
+
+// Get all tasks
+app.get('/api/tasks', async (req, res) => {
+  try {
+    const tasks = await Task.find().sort({ createdAt: -1 });
+    return res.status(200).json(tasks);
+  } catch (err) {
+    console.error('Error fetching tasks:', err);
+    return res.status(500).json({ message: 'Server error.' });
+  }
+});
+
+// ----- START SERVER -----
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/index.html`);
 });

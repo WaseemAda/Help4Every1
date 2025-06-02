@@ -53,3 +53,40 @@
   </footer>
 </body>
 </html>
+
+<script>
+document.querySelector('.task-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const task = {
+    taskTitle: document.getElementById('taskTitle').value,
+    description: document.getElementById('description').value,
+    budget: document.getElementById('budget').value,
+    location: document.getElementById('location').value,
+    date: document.getElementById('date').value,
+    time: document.getElementById('time').value,
+    username: localStorage.getItem("username") || "anonymous"
+  };
+
+  try {
+    const response = await fetch('http://localhost:3000/api/task', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(task)
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      alert('Task posted successfully!');
+      window.location.href = 'main.html'; // redirect or reload
+    } else {
+      alert(result.message || 'Failed to post task.');
+    }
+  } catch (err) {
+    console.error('Error posting task:', err);
+    alert('Could not connect to server.');
+  }
+});
+</script>
+
