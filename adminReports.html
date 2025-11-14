@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Monthly Reports & Metrics</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        li a {
+            text-decoration: none; 
+            color: #ffffff; 
+            font-size: 18px; 
+            font-weight: bold; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            transition: background-color 0.3s, color 0.3s; 
+        }
+        
+        li a:hover {
+            background-color: #47a8d7; 
+            color: white; 
+        }
+        
+        
+        li {
+            margin-right: 20px; 
+        }
+        </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">Help4Every1</div>
+            <li><a href="admin.html">Page</a></li>
+        </div>
+    </header>
+
+    <main>
+        <div class="report-header">
+            <h2>Monthly Performance Report</h2>
+            <p>Detailed analytics on monthly profit, workload, service requests, and customer satisfaction.</p>
+        </div>
+
+        <section class="report-section">
+            <div class="report-box">
+                <h3>Monthly Profit Overview</h3>
+                <canvas id="profitChart"></canvas>
+                <p>Total Profit: <strong>$500,000</strong></p>
+                <p>Profit Increase: <strong>+35%</strong> from last month</p>
+            </div>
+
+            <div class="report-box">
+                <h3>Workload Overview</h3>
+                <canvas id="workloadChart"></canvas>
+                <p>Total Jobs Completed: <strong>15000</strong></p>
+                <p>Jobs per Week: <strong>3750</strong> (Avg)</p>
+            </div>
+        </section>
+
+        <section class="report-section">
+            <div class="report-box">
+                <h3>User Engagement</h3>
+                <canvas id="userEngagementChart"></canvas>
+                <p>Active Users: <strong>6740</strong></p>
+                <p>Inactive Users: <strong>30</strong></p>
+            </div>
+
+            <div class="report-box">
+                <h3>Service Request Categories</h3>
+                <canvas id="serviceRequestChart"></canvas>
+                <p>Maintenance Requests: <strong>50</strong></p>
+                <p>Consultation Requests: <strong>30</strong></p>
+                <p>Other: <strong>20</strong></p>
+            </div>
+        </section>
+
+        <section class="report-section">
+            <div class="report-box">
+                <h3>Customer Satisfaction</h3>
+                <canvas id="satisfactionChart"></canvas>
+                <p>Very Satisfied: <strong>80%</strong></p>
+                <p>Satisfied: <strong>10%</strong></p>
+                <p>Neutral: <strong>5%</strong></p>
+                <p>Unsatisfied: <strong>5%</strong></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Help4Every1. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Monthly Profit Chart
+        var ctxProfit = document.getElementById('profitChart').getContext('2d');
+        var profitChart = new Chart(ctxProfit, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Monthly Profit ($)',
+                    data: [3000, 4000, 3500, 5000],
+                    borderColor: '#47a8d7',
+                    fill: false,
+                    tension: 0.1
+                }]
+            }
+        });
+
+        // Workload Overview Chart
+        var ctxWorkload = document.getElementById('workloadChart').getContext('2d');
+        var workloadChart = new Chart(ctxWorkload, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Completed Jobs',
+                    data: [15, 25, 20, 30],
+                    backgroundColor: '#8e44ad',
+                    borderColor: '#8e44ad',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // User Engagement Chart
+        var ctxEngagement = document.getElementById('userEngagementChart').getContext('2d');
+        var engagementChart = new Chart(ctxEngagement, {
+            type: 'pie',
+            data: {
+                labels: ['Active Users', 'Inactive Users'],
+                datasets: [{
+                    data: [120, 30],
+                    backgroundColor: ['#47a8d7', '#f39c12'],
+                    borderColor: ['#47a8d7', '#f39c12'],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Service Requests Chart
+        var ctxRequests = document.getElementById('serviceRequestChart').getContext('2d');
+        var serviceRequestChart = new Chart(ctxRequests, {
+            type: 'doughnut',
+            data: {
+                labels: ['Maintenance', 'Consultation', 'Other'],
+                datasets: [{
+                    data: [50, 30, 20],
+                    backgroundColor: ['#3498db', '#f39c12', '#e74c3c'],
+                    borderColor: ['#3498db', '#f39c12', '#e74c3c'],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Customer Satisfaction Chart
+        var ctxSatisfaction = document.getElementById('satisfactionChart').getContext('2d');
+        var satisfactionChart = new Chart(ctxSatisfaction, {
+            type: 'bar',
+            data: {
+                labels: ['Very Satisfied', 'Satisfied', 'Neutral', 'Unsatisfied'],
+                datasets: [{
+                    label: 'Customer Feedback',
+                    data: [50, 30, 15, 5],
+                    backgroundColor: '#2ecc71',
+                    borderColor: '#2ecc71',
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
